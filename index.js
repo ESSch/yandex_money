@@ -1,35 +1,10 @@
-function addMany(data, add) {
-	try {
-		data = JSON.parse(data);
-	} catch (e) {
-		data = [];
-	}
-
-	if (! Array.isArray(data)) {
-		data = [];
-	}
-
-	if (undefined !== add) {
-		data.push(add);
-	}
-
-	data = JSON.stringify(data);
-	return data;
-}
-console.log(addMany("") == "[]");
-console.log(addMany("[]") == "[]");
-console.log(addMany("[]}") == "[]");
-console.log(addMany("{}") == "[]");
-console.log(addMany("", "a") == '["a"]');
-console.log(addMany('["a"]', "b") == '["a","b"]');
-
 const express 	= require('express');
 const fs 		= require('fs');
 const { URL }	= require('url');
 const fileUrl 	= '/home/essch/test_yandexapp/node-school-wallet-app/source/cards.json';
-const app = express();
+const my 		= require('./libs/my.js');
 
-app.use(express.static('public'));
+let app = express();
 
 app.get('/', (req, res) => {
 	res.send(`<!doctype html>
@@ -67,7 +42,7 @@ app.get('/cards', (req, res) => {
 /** @example http://127.0.0.1:3000/cards/add */
 app.get('/cards/add', (req, res) => {
 	fs.readFile(fileUrl, 'utf8', function(error, data) {
-		data = addMany(data + "", {
+		data = my(data + "", {
 			cardNumber: 2,
 			balance: 1
 		});
