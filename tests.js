@@ -1,4 +1,4 @@
-const addMany = require('./libs/my.js');
+const addMany = require('./libs/addPrice.js');
 
 console.log(addMany("") == "[]");
 console.log(addMany("[]") == "[]");

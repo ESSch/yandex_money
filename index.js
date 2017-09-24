@@ -2,7 +2,7 @@ const express 	= require('express');
 const fs 		= require('fs');
 const { URL }	= require('url');
 const fileUrl 	= '/home/essch/test_yandexapp/node-school-wallet-app/source/cards.json';
-const my 		= require('./libs/my.js');
+const addPrice	= require('./libs/addPrice.js');
 
 let app = express();
 
@@ -42,7 +42,7 @@ app.get('/cards', (req, res) => {
 /** @example http://127.0.0.1:3000/cards/add */
 app.get('/cards/add', (req, res) => {
 	fs.readFile(fileUrl, 'utf8', function(error, data) {
-		data = my(data + "", {
+		data = addPrice(data + "", {
 			cardNumber: 2,
 			balance: 1
 		});
