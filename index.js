@@ -1,3 +1,28 @@
+function addMany(data, add) {
+	try {
+		data = JSON.parse(data);
+	} catch (e) {
+		data = [];
+	}
+
+	if (! Array.isArray(data)) {
+		data = [];
+	}
+
+	if (undefined !== add) {
+		data.push(add);
+	}
+
+	data = JSON.stringify(data);
+	return data;
+}
+console.log(addMany("") == "[]");
+console.log(addMany("[]") == "[]");
+console.log(addMany("[]}") == "[]");
+console.log(addMany("{}") == "[]");
+console.log(addMany("", "a") == '["a"]');
+console.log(addMany('["a"]', "b") == '["a","b"]');
+
 const express 	= require('express');
 const fs 		= require('fs');
 const { URL }	= require('url');
@@ -32,20 +57,22 @@ app.get('/transfer', (req, res) => {
 	});
 });
 
+/** @example http://127.0.0.1:3000/cards */
 app.get('/cards', (req, res) => {
 	fs.readFile(fileUrl, 'utf8', function (err, cont) {
 		res.end(cont);
 	});
 });
 
+/** @example http://127.0.0.1:3000/cards/add */
 app.get('/cards/add', (req, res) => {
-	fs.readFile(fileUrl, 'utf8', function (err, cont) {
-		let data = JSON.parse(cont);
-		data.apply({
+	fs.readFile(fileUrl, 'utf8', function(error, data) {
+		data = addMany(data + "", {
 			cardNumber: 2,
 			balance: 1
 		});
-		res.end(JSON.stringify(data));
+		res.end(data);
+	  fs.writeFile(fileUrl, data);
 	});
 });
 
