@@ -32,16 +32,53 @@ app.get('/transfer', (req, res) => {
 	});
 });
 
-/** @example http://127.0.0.1:3000/cards */
+/** @example curl http://127.0.0.1:3000/cards */
 app.get('/cards', (req, res) => {
 	fs.readFile(fileUrl, 'utf8', function (err, cont) {
 		res.end(cont);
 	});
 });
 
-/** @example http://127.0.0.1:3000/cards/add */
+/** @example curl http://127.0.0.1:3000/cards/add */
 app.get('/cards/add', (req, res) => {
 	fs.readFile(fileUrl, 'utf8', function(error, data) {
+		data = addPrice(data + "", {
+			cardNumber: 2,
+			balance: 1
+		});
+		res.end(data);
+	  fs.writeFile(fileUrl, data);
+	});
+});
+
+/** @example curl --request POST http://127.0.0.1:3000/cards --data "" */
+app.post("/cards", (req, res) => {
+	console.log(req);
+	let moderate = true;// todo
+	if (moderate) {
+		console.log(req);
+		let addCard = ""; //todo: request data
+		res.end(addCard);
+	} else {
+		res.status(400).send("Bad request"); //todo: set work
+	}
+});
+
+/** @example 
+	curl --request DELETE http://127.0.0.1:3000/cards 
+	curl -i --request DELETE http://127.0.0.1:3000/cards/2 | grep HTTP
+*/
+app.delete(/\/cards\/\d+/, (req, res) => {
+	// todo: success /cards/2?clear_cache=Y ?
+	let n = req.url.match(/\d+/)[0];
+	fs.readFile(fileUrl, 'utf8', function(error, data) {
+		let nExists = 2; // todo
+		if (n == nExists) {
+		// todo delete card
+			res.sendStatus(200).end();
+		} else {
+			res.status(404).send("Card not found");
+		}
 		data = addPrice(data + "", {
 			cardNumber: 2,
 			balance: 1
