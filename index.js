@@ -2,7 +2,7 @@ const express 	= require('express');
 const fs 		= require('fs');
 const { URL }	= require('url');
 const fileUrl 	= '/home/essch/test_yandexapp/node-school-wallet-app/source/cards.json';
-const addPrice	= require('./libs/addPrice.js');
+const Price	= require('./libs/Price.js');
 
 let app = express();
 
@@ -42,7 +42,7 @@ app.get('/cards', (req, res) => {
 /** @example curl http://127.0.0.1:3000/cards/add */
 app.get('/cards/add', (req, res) => {
 	fs.readFile(fileUrl, 'utf8', function(error, data) {
-		data = addPrice(data + "", {
+		data = Price.add(data + "", {
 			cardNumber: 2,
 			balance: 1
 		});
@@ -72,18 +72,13 @@ app.delete(/\/cards\/\d+/, (req, res) => {
 	// todo: success /cards/2?clear_cache=Y ?
 	let n = req.url.match(/\d+/)[0];
 	fs.readFile(fileUrl, 'utf8', function(error, data) {
-		let nExists = 2; // todo
-		if (n == nExists) {
-		// todo delete card
+		if (Price.is(data, n)) {
+			data = Price.del(data + "", n);
+			console.log(data);
 			res.sendStatus(200).end();
 		} else {
 			res.status(404).send("Card not found");
 		}
-		data = addPrice(data + "", {
-			cardNumber: 2,
-			balance: 1
-		});
-		res.end(data);
 	  fs.writeFile(fileUrl, data);
 	});
 });
