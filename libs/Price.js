@@ -1,21 +1,11 @@
 'use strict';
 
 const Many = {
-	_jsonToArray: data => {
-		try {
-			data = JSON.parse(data);
-		} catch (e) {
-			data = [];
-		}
-
-		if (! Array.isArray(data)) {
-			data = [];
-		}
-
-		return data;
+	get: () => {
+		return this.d;
 	},
-	_arrayToJson: data => {
-		return JSON.stringify(data);
+	set: data => {
+		this.d = data; 
 	},
 	add: (data, add) => {
 		data = Many._jsonToArray(data);
@@ -46,7 +36,35 @@ const Many = {
 		data = Many._jsonToArray(data);
 
 		return data.length > n; 
+	},
+	_jsonToArray: data => {
+		try {
+			data = JSON.parse(data);
+		} catch (e) {
+			data = [];
+		}
+
+		if (! Array.isArray(data)) {
+			data = [];
+		}
+
+		return data;
+	},
+	_arrayToJson: data => {
+		return JSON.stringify(data);
+	},
+}
+
+module.exports.Many = Many;
+
+let BD = class {
+	constructor(url) {
+		this.data = url; //todo read file
+	}
+
+	save() {
+		return this.data;
 	}
 }
 
-module.exports = Many;
+module.exports.BD = BD;

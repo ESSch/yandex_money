@@ -79,7 +79,7 @@ app.delete(/\/cards\/\d+/, (req, res) => {
 		} else {
 			res.status(404).send("Card not found");
 		}
-	  fs.writeFile(fileUrl, data);
+		fs.writeFile(fileUrl, data);
 	});
 });
 
