@@ -16,6 +16,25 @@
     "node": "^8.2"
   },
   "dependencies": {
-    "express": "^4.15.3"
+    "eslint": "^4.7.2",
+    "express": "^4.15.3",
+    "postcss": "^6.0.12",
+    "postcss-cli": "^4.1.1",
+    "stylelint": "^8.1.1",
+    "stylelint-config-recommended": "^1.0.0"
+  },
+  "devDependencies": {
+    "debug": "^3.1.0",
+    "gulp": "^3.9.1",
+    "husky": "^0.14.3",
+    "morgan": "^1.9.0",
+    "webpack": "^3.6.0",
+    "winston": "^2.4.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "commit": "node libs/precommit.js",
+    "push": "node libs/commit.js",
+    "build": "npm run commit && npm run push"
   }
 }
